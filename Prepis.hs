@@ -1,3 +1,4 @@
+module Prepis where
 import qualified Data.HashMap as H
 import qualified Data.Set as S
 import Data.List (intercalate)
