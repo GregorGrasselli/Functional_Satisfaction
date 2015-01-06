@@ -2,6 +2,7 @@ module BasicEnumeration where
 
 import qualified Data.HashMap as H
 
+
 bTrue kt _ = kt
 bFalse _ kf = kf
 
@@ -39,6 +40,7 @@ enum :: Monad m => ((Env a -> m b) -> (Env a -> m b) -> Env a -> m b) -> (Env a 
 enum b kt kf = b kt kf H.empty
 
 -- the enum from the article
+--enum' :: ((Env a -> IO ()) -> (Env a -> IO ()) -> Env a -> IO ()) -> m b
 enum' b = enum b printTrue printFalse
 
 -- property finding
@@ -54,3 +56,5 @@ testTrue b = enum b (\_ -> Right ()) (\env -> Left env)
 maybeTrue b = case testTrue $ bNot b of
                 Right _ -> False
                 Left  _ -> True
+
+tru = bTrue
