@@ -2,6 +2,7 @@ module Primeri where
 
 import Graph
 import MPlusEnumeration
+import BasicEnumeration
 import qualified Data.List as L
 import qualified Data.HashMap as H (empty, Map, filter)
 import Control.Monad
@@ -20,3 +21,9 @@ findGraphSolutionl n = findGraphSolution n 1 3
 
 findGraphSolutionm :: Int -> Maybe (H.Map String Bool, Bool)
 findGraphSolutionm n = findGraphSolution n 1 3
+
+long :: MonadPlus m => (Env Bool -> m a) -> (Env Bool -> m a) -> Env Bool -> m a
+long = ((bNot (bVarl "x") `bOr` bVarl "y") `bOr` bVarl "z") `bOr` bVarl "z"
+
+short :: MonadPlus m => (Env Bool -> m a) -> (Env Bool -> m a) -> Env Bool -> m a
+short = (bVarl "x" `bOr` (bNot (bVarl "x") `bOr` bVarl "y")) `bOr` bVarl "z"
