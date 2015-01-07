@@ -21,4 +21,4 @@ findTrue b = b (\e -> Just e) (\_ -> Nothing) H.empty
 findFalse b = b (\_ -> Nothing) (\e -> Just e) H.empty
 
 alwaysTruel b = and $ b (\_ -> [True]) (\_ -> [False]) H.empty
-maybeTruel  b = or  $ b (\_ -> [True]) (\_ -> [False]) H.empty
+maybeTruel  b = or  $ b (\_ -> [True]) (\_ -> [False]) H.empty 

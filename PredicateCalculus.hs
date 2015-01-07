@@ -5,7 +5,6 @@ import qualified Data.Set as S
 import qualified Data.HashMap as H (insert, empty, lookup)
 import Control.Monad (mplus, mzero)
 import BasicEnumeration
-import MPlusEnumeration
 import Prelude hiding (lookup)
 
 -- | Find the constraints on a variable enforced by the given

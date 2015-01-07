@@ -4,13 +4,8 @@ import qualified Data.List as L
 
 import BasicEnumeration
 
--- every element is a list of neighbours whose indices are greater then the current index
+-- | A graph is given as a list of edges. Vertex indices start with 0!
 type Graph = [(Int, Int)]
-
---bOr :: (t2 -> t1 -> t) -> (t2 -> t3 -> t1) -> t2 -> t3 -> t
--- --conditionA :: Graph -> Int -> t2 -> t3 -> t
--- conditionA g k bvar kt kf = foldl f bTrue g
---     where f g acc = bAnd acc $ foldl bOr bFalse (map (\x -> bvar lst
 
 condA g k bvar = L.foldl' f bTrue $ take (size g) [0..]
     where f a e = bAnd a $ L.foldl' bOr bFalse (map bvar (map ((show e) ++) $ map show [0..k]))

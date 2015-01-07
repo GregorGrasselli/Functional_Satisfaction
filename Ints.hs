@@ -7,8 +7,6 @@ module Ints where
 import qualified Data.Set as S
 import Data.List (intercalate)
 import Prelude hiding (lookup)
-import BasicEnumeration (Env)
-import Data.HashMap as H (lookup)
 
 data Ints = Finite (S.Set Int) | CoFinite (S.Set Int)
 
@@ -34,7 +32,7 @@ union a b = complement $ intersection (complement a) (complement b)
 member i (Finite a)   = S.member i a
 member i (CoFinite a) = S.notMember i a
 
--- | * Creating sets
+-- * Creating sets
 
 singleton i = Finite (S.singleton i)
 

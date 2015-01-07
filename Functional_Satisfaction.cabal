@@ -2,7 +2,7 @@
 -- further documentation, see http://haskell.org/cabal/users-guide/
 
 -- The name of the package.
-name:                Functional_Satisfaction
+name:                FunctionalSatisfaction
 
 -- The package version.  See the Haskell package versioning policy (PVP) 
 -- for standards guiding when and how versions should be incremented.
@@ -13,10 +13,10 @@ name:                Functional_Satisfaction
 version:             0.1.0.0
 
 -- A short (one-line) description of the package.
-synopsis:            Truth tables and predicate calculus
+synopsis:            Boolean solver.
 
 -- A longer description of the package.
--- description:         
+description:         A continuation based boolean solver with adaptations for simple integer finite and cofinite set solving and a graph vertex coloring solver.
 
 -- The license under which the package is released.
 -- license:             
@@ -44,11 +44,11 @@ cabal-version:       >=1.8
 
 library
   -- Modules exported by the library.
-  exposed-modules:     Prepis
+  exposed-modules:     BasicEnumeration, MPlusEnumeration, Ints, PredicateCalculus
   
   -- Modules included in this library but not exported.
   -- other-modules:       
   
   -- Other library packages from which modules are imported.
-  build-depends:       base ==4.6.*, containers ==0.5.*
+  build-depends:       base ==4.6.*, containers ==0.5.*, hashmap
   

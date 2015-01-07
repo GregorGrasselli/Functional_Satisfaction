@@ -10,13 +10,13 @@ import qualified Data.HashMap as H
 bTrue kt _ = kt
 bFalse _ kf = kf
 
--- | * Operators
+-- * Operators
 bNot b kt kf = b kf kt
 
 bOr  b1 b2 kt kf = b1 kt (b2 kt kf)
 bAnd b1 b2 kt kf = b1 (b2 kt kf) kf
 
--- | * Evaluation
+-- * Evaluation
 
 -- | Evaluate a boolean expression without variables.
 eval1 b = b True False
