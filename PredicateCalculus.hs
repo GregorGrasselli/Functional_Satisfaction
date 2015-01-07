@@ -1,31 +1,49 @@
 module PredicateCalculus where
 
 import Ints
-import Data.HashMap as H (insert, empty)
+import qualified Data.Set as S
+import qualified Data.HashMap as H (insert, empty, lookup)
 import Control.Monad (mplus, mzero)
 import BasicEnumeration
+import MPlusEnumeration
 import Prelude hiding (lookup)
 
-bEquals x i kt kf env = (if member i vx then kt $ H.insert x (singleton i) env
-                         else mzero) `mplus`
-                        (if not $ emptyp vf then kf $ H.insert x vf env
-                         else mzero)
-                            where
-                              vx = lookup x env
-                              vf = intersection vx $ complement $ singleton i
+-- | Find the constraints on a variable enforced by the given
+-- environment.
+lookup :: String -> Env Ints -> Ints
+lookup x u = case H.lookup x u of
+               Just s  -> s
+               Nothing -> universe
 
-data Cond = Equals String Int | Or [Cond] | And [Cond]
-          deriving Show
+bEquals x i = bMake x (singleton i)
 
--- compileCond :: Cond -> (Env Ints -> [a]) -> (Env Ints -> [a]) -> Env Ints -> [a]
--- that type makes the whole thing run on lists
-compileCond (Equals s i) kt kf = bEquals s i kt kf
-compileCond (Or (c:cs))  kt kf = bOr (compileCond c) (compileCond $ Or cs) kt kf
-compileCond (Or [])      _  kf = kf
-compileCond (And (c:cs)) kt kf = bAnd (compileCond c) (compileCond $ And cs) kt kf
-compileCond (And [])     kt _  = kt
+bBounded x l u p = bMake x (Finite $ S.fromList $ filter (runPredicate p) [l..u])
 
--- |* Program equivalence checker
+bMake x vp kt kf env = f vt kt `mplus` f vf kf
+    where
+      f s k = if not $ emptyp s then k $ H.insert x s env else mzero
+      vx = lookup x env
+      vt = intersection vx vp
+      vf = intersection vx $ complement vp
+
+-- This is only here to make it an instance of show, so that 
+newtype Predicate = Predicate {runPredicate :: Int -> Bool}
+
+instance Show Predicate where
+    show _ = "pred"
+
+data Cond = Equals String Int | Or [Cond] | And [Cond] | Bounded String Int Int Predicate
+            deriving Show
+
+
+compileCond (Equals s i) kt kf       = bEquals s i kt kf
+compileCond (Or (c:cs))  kt kf       = bOr (compileCond c) (compileCond $ Or cs) kt kf
+compileCond (Or [])      _  kf       = kf
+compileCond (And (c:cs)) kt kf       = bAnd (compileCond c) (compileCond $ And cs) kt kf
+compileCond (And [])     kt _        = kt
+compileCond (Bounded x l u p)  kt kf = bBounded x l u p kt kf
+
+-- * Program equivalence checker
 data Stmt = If Cond Stmt Stmt | Decision Int deriving Show
 
 --compileStmt :: Stmt -> (Int -> Env Ints -> [a]) -> Env Ints -> [a]

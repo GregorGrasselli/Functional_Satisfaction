@@ -1,3 +1,7 @@
+{- | Module : Ints
+
+Finite and cofinite sets of integers. -}
+
 module Ints where
 
 import qualified Data.Set as S
@@ -12,6 +16,7 @@ instance Show Ints where
     show (Finite a)   = "{" ++ intercalate ", " (map show (S.toList a)) ++ "}"
     show (CoFinite b) = "Z \\ " ++ show (Finite b)
 
+-- | True if the set is empty.
 emptyp :: Ints -> Bool
 emptyp (Finite x) | S.null x = True
 emptyp _                     = False
@@ -26,15 +31,15 @@ complement (CoFinite a) = Finite a
 
 union a b = complement $ intersection (complement a) (complement b)
 
+member i (Finite a)   = S.member i a
+member i (CoFinite a) = S.notMember i a
+
+-- | * Creating sets
+
 singleton i = Finite (S.singleton i)
 
 empty = Finite (S.empty)
 universe = complement empty
 
-lookup :: String -> Env Ints -> Ints
-lookup x u = case H.lookup x u of
-               Just s  -> s
-               Nothing -> universe
 
-member i (Finite a)   = S.member i a
-member i (CoFinite a) = S.notMember i a
+
