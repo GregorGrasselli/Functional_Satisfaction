@@ -4,7 +4,7 @@ import Data.HashMap as H
 import Control.Monad
 import BasicEnumeration (Env)
 
--- |* enumeration and properties the lazy way (last paragraph of
+-- * enumeration and properties the lazy way (last paragraph of
 -- section 3.4) all functions here have an added l postfix
 bVarl :: MonadPlus m => String -> (Env Bool -> m a) -> (Env Bool -> m a) -> Env Bool -> m a
 bVarl x kt kf env = case H.lookup x env of
