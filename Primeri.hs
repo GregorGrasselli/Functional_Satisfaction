@@ -12,8 +12,8 @@ polygonalGraph s d = L.concatMap f [0..s-1]
     where f i = take (d + 1) $ zip (repeat i) (iterate ((`mod` s) . (+ 1)) ((i + 1) `mod` s))
 
 findGraphSolution :: (Monad m, MonadPlus m) => Int -> Int -> Int -> m (H.Map String Bool, Bool)
-findGraphSolution n d k = wellColored (polygonalGraph n d) k bVarl (\ e -> return (e, True)) (\ _ -> mzero) H.empty
---   where filterEnv = H.filter id
+findGraphSolution n d k = wellColored (polygonalGraph n d) k bVarl (\ e -> return (filterEnv e, True)) (\ _ -> mzero) H.empty
+   where filterEnv = H.filter id
 
 findGraphSolutionl ::  Int -> [(H.Map String Bool, Bool)]
 findGraphSolutionl n = findGraphSolution n 1 3
